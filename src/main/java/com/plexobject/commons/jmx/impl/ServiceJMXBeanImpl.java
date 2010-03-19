@@ -61,6 +61,7 @@ public class ServiceJMXBeanImpl extends NotificationBroadcasterSupport
                         .getCurrentTimeMillis(), name + " changed", name,
                 "String", oldValue, value);
         sendNotification(notification);
+        handleNotification(notification, null);
     }
 
     @Override
