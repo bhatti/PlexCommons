@@ -18,7 +18,7 @@ import com.plexobject.commons.jmx.JMXRegistrar;
 import com.plexobject.commons.jmx.impl.ServiceJMXBeanImpl;
 import com.plexobject.commons.metrics.Metric;
 import com.plexobject.commons.metrics.Timer;
-import com.plexobject.commons.Configuration;
+import com.plexobject.commons.config.Configuration;
 import com.plexobject.commons.utils.LRUSortedList;
 
 public class FilteredSMTPAppender extends SMTPAppender {
