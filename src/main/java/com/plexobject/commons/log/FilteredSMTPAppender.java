@@ -5,20 +5,17 @@ import java.beans.PropertyChangeListener;
 import java.util.Comparator;
 import java.util.Date;
 
-import javax.mail.MessagingException;
-
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.time.FastDateFormat;
-
 import org.apache.log4j.Layout;
 import org.apache.log4j.net.SMTPAppender;
 import org.apache.log4j.spi.LoggingEvent;
 
+import com.plexobject.commons.config.Configuration;
 import com.plexobject.commons.jmx.JMXRegistrar;
 import com.plexobject.commons.jmx.impl.ServiceJMXBeanImpl;
 import com.plexobject.commons.metrics.Metric;
 import com.plexobject.commons.metrics.Timer;
-import com.plexobject.commons.config.Configuration;
 import com.plexobject.commons.utils.LRUSortedList;
 
 public class FilteredSMTPAppender extends SMTPAppender {
