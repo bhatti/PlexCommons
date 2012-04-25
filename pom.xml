@@ -125,35 +125,6 @@
           </execution>
         </executions>
       </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version>1.1</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <executable>maven</executable>
-          <arguments>
-            <argument>-Xms32m</argument>
-            <argument>-Xmx1024m</argument>
-          </arguments>
-          <systemProperties>
-            <systemProperty>
-              <key>the.user</key>
-              <value>myuser</value>
-            </systemProperty>
-            <systemProperty>
-              <key>the.password</key>
-              <value>mypassword</value>
-            </systemProperty>
-          </systemProperties>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
   <reporting>
