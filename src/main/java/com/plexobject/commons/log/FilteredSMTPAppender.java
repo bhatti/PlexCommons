@@ -22,25 +22,28 @@ public class FilteredSMTPAppender extends SMTPAppender {
     private static final String SMTP_FILTER_MIN_DUPLICATE_INTERVAL_SECS = "smtp.filter.min.duplicate.interval.secs";
     private static final int MAX_STATS = Configuration.getInstance()
             .getInteger("smtp.filter.max", 100);
-    private static int MIN_DUPLICATE_EMAILS_INTERVAL = Configuration
-            .getInstance().getInteger(SMTP_FILTER_MIN_DUPLICATE_INTERVAL_SECS,
-                    60); // 1 minute
     private static final Date STARTED = new Date();
-    private static final FastDateFormat DATE_FMT = FastDateFormat
-            .getInstance("MM/dd/yy HH:mm");
 
-    final static class Stats implements Comparable<Stats> {
+    private static final String DEFAULT_DATE_FORMAT = "MM/dd/yy HH:mm";
+
+    private String datePattern = DEFAULT_DATE_FORMAT;
+
+    private int mailIntervalSecs = Configuration.getInstance().getInteger(SMTP_FILTER_MIN_DUPLICATE_INTERVAL_SECS, 60); // 1 minute
+
+    private FastDateFormat dateFormatter = FastDateFormat.getInstance(DEFAULT_DATE_FORMAT);
+
+    final class Stats implements Comparable<Stats> {
         final int checksum;
         final long firstSeen;
         long lastSeen;
         long lastSent;
         int numSeen;
         int numEmails;
- 
+
         Stats(LoggingEvent event) {
             StringBuilder sb = new StringBuilder();
             String[] trace = event.getThrowableStrRep();
-            if (trace != null) {  
+            if (trace != null) {
                 for (int i = 1; i < trace.length && i < 20; i++) { // top 20 lines
                     // of trace
                     sb.append(trace[i].trim());
@@ -60,7 +63,7 @@ public class FilteredSMTPAppender extends SMTPAppender {
             numSeen++;
             lastSeen = current;
 
-            if (elapsed > MIN_DUPLICATE_EMAILS_INTERVAL * 1000) {
+            if (elapsed > mailIntervalSecs * 1000) {
                 lastSent = current;
                 numEmails++;
                 return true;
@@ -89,9 +92,9 @@ public class FilteredSMTPAppender extends SMTPAppender {
         public String toString() {
             return " (" + checksum + ") occurred " + numSeen + " times, "
                     + numEmails + " # of emails, first @"
-                    + DATE_FMT.format(new Date(firstSeen)) + ", last @"
-                    + DATE_FMT.format(new Date(lastSeen))
-                    + " since server started @" + DATE_FMT.format(STARTED);
+                    + dateFormatter.format(new Date(firstSeen)) + ", last @"
+                    + dateFormatter.format(new Date(lastSeen))
+                    + " since server started @" + dateFormatter.format(STARTED);
         }
 
         @Override
@@ -122,7 +125,7 @@ public class FilteredSMTPAppender extends SMTPAppender {
                     if (event != null
                             && SMTP_FILTER_MIN_DUPLICATE_INTERVAL_SECS
                                     .equalsIgnoreCase(event.getPropertyName())) {
-                        MIN_DUPLICATE_EMAILS_INTERVAL = Integer
+                        mailIntervalSecs = Integer
                                 .parseInt((String) event.getNewValue());
                     }
                 } catch (Exception e) {
@@ -163,6 +166,23 @@ public class FilteredSMTPAppender extends SMTPAppender {
         } finally {
             timer.stop();
         }
+    }
+
+    public int getMailIntervalSecs() {
+        return mailIntervalSecs;
+    }
+
+    public void setMailIntervalSecs(int mailIntervalSecs) {
+        this.mailIntervalSecs = mailIntervalSecs;
+    }
+
+    public String getDatePattern() {
+        return datePattern;
+    }
+
+    public void setDatePattern(String datePattern) {
+        this.datePattern = datePattern;
+        this.dateFormatter = FastDateFormat.getInstance(datePattern);
     }
 
     private void setMessageFooter(Stats stats) {
