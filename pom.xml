@@ -109,8 +109,6 @@
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <meminitial>512m</meminitial>
-          <maxmem>1024m</maxmem>
           <source>1.6</source>
           <target>1.6</target>
         </configuration>
@@ -212,13 +210,35 @@
       </plugin>
     </plugins>
   </reporting>
-  <pluginRepositories>
-    <pluginRepository>
-      <id>elca-services</id>
-      <url>http://el4.elca-services.ch/el4j/maven2repository</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-    </pluginRepository>
-  </pluginRepositories>
+  <profiles>
+    <profile>
+      <id>compiler-memory</id>
+      <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-compiler-plugin</artifactId>
+              <configuration>
+                <meminitial>512m</meminitial>
+                <maxmem>1024m</maxmem>
+              </configuration>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+      </build>
+    </profile>
+    <profile>
+      <id>elca-repo</id>
+      <pluginRepositories>
+        <pluginRepository>
+          <id>elca-services</id>
+          <url>http://el4.elca-services.ch/el4j/maven2repository</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
+  </profiles>
 </project>
