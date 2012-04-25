@@ -3,8 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.plexobject.commons</groupId>
   <artifactId>plexobject-commons</artifactId>
-  <packaging>jar</packaging>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.1-SNAPSHOT</version>
   <name>plexobject-commons</name>
   <url>http://github.com/bhatti/PlexCommons</url>
   <dependencies>
