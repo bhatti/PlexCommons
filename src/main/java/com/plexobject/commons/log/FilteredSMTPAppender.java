@@ -30,6 +30,8 @@ public class FilteredSMTPAppender extends SMTPAppender {
 
     private int mailIntervalSecs = Configuration.getInstance().getInteger(SMTP_FILTER_MIN_DUPLICATE_INTERVAL_SECS, 60); // 1 minute
 
+    private int linesOfTrace = 20;
+
     private FastDateFormat dateFormatter = FastDateFormat.getInstance(DEFAULT_DATE_FORMAT);
 
     final class Stats implements Comparable<Stats> {
@@ -44,8 +46,10 @@ public class FilteredSMTPAppender extends SMTPAppender {
             StringBuilder sb = new StringBuilder();
             String[] trace = event.getThrowableStrRep();
             if (trace != null) {
-                for (int i = 1; i < trace.length && i < 20; i++) { // top 20 lines
-                    // of trace
+                int total = linesOfTrace > 0 ? linesOfTrace : trace.length;
+                // skip the first line, and only consider the top 'linesOfTrace' lines of trace
+                // (or all of them, if linesOfTrace is 0)
+                for (int i = 1; i < trace.length && i < total; i++) {
                     sb.append(trace[i].trim());
                 }
             } else {
@@ -166,6 +170,14 @@ public class FilteredSMTPAppender extends SMTPAppender {
         } finally {
             timer.stop();
         }
+    }
+
+    public int getLinesOfTrace() {
+        return linesOfTrace;
+    }
+
+    public void setLinesOfTrace(int linesOfTrace) {
+        this.linesOfTrace = linesOfTrace;
     }
 
     public int getMailIntervalSecs() {
