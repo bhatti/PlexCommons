@@ -13,10 +13,10 @@ import javax.management.MBeanServer;
 import javax.management.MBeanServerFactory;
 import javax.management.ObjectName;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.validator.GenericValidator;
 import org.apache.log4j.Logger;
 
 import com.plexobject.commons.jmx.impl.Log4jJMXBeanImpl;
@@ -63,7 +63,7 @@ public class JMXRegistrar {
      * @return instance of ServiceJMXBean
      */
     public ServiceJMXBeanImpl register(final String serviceName) {
-        if (GenericValidator.isBlankOrNull(serviceName)) {
+        if (StringUtils.isBlank(serviceName)) {
             throw new IllegalArgumentException("serviceName not specified");
         }
         synchronized (serviceName.intern()) {

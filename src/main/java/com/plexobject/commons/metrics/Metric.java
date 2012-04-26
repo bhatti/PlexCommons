@@ -6,8 +6,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.validator.GenericValidator;
 
 /**
  * This class maintains profiling metrics. This is thread safe class.
@@ -47,7 +47,7 @@ public class Metric {
      * @return Metric instance
      */
     public static Metric getMetric(final String name) {
-        if (GenericValidator.isBlankOrNull(name)) {
+        if (StringUtils.isBlank(name)) {
             throw new IllegalArgumentException("name not specified");
         }
         Metric metric = null;
