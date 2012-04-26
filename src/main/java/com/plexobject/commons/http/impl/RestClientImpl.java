@@ -17,10 +17,10 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.PutMethod;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.validator.GenericValidator;
 import org.apache.log4j.Logger;
 
 import com.plexobject.commons.Tuple;
@@ -47,7 +47,7 @@ public class RestClientImpl implements RestClient {
 
     public RestClientImpl(final String url, final String username,
             final String password) {
-        if (GenericValidator.isBlankOrNull(url)) {
+        if (StringUtils.isBlank(url)) {
             throw new IllegalArgumentException("url not specified");
         }
 
@@ -59,8 +59,8 @@ public class RestClientImpl implements RestClient {
         httpClient.getParams().setParameter("http.connection.timeout",
                 new Integer(CONNECTION_TIMEOUT_MILLIS));
 
-        if (!GenericValidator.isBlankOrNull(username)
-                && !GenericValidator.isBlankOrNull(password)) {
+        if (!StringUtils.isBlank(username)
+                && !StringUtils.isBlank(password)) {
             httpClient.getParams().setAuthenticationPreemptive(true);
             final Credentials creds = new UsernamePasswordCredentials(username,
                     password);
