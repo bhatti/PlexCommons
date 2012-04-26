@@ -56,7 +56,7 @@ public class FilteredSMTPAppender extends SMTPAppender {
                 sb.append(event.getMessage());
             }
             this.checksum = sb.toString().hashCode();
-            firstSeen = lastSeen = System.currentTimeMillis();
+            firstSeen = lastSeen = lastSent = System.currentTimeMillis();
             numSeen = 1;
         }
 
